@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	path := "../inputs/input01.txt"
+	path := "/home/krzysztof/Repos/AdventOfCode2023/inputs/input01.txt"
 	result01 := FirstPart(path)
 	fmt.Println(result01)
 	result02 := SecondPart(path)
