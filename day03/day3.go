@@ -32,9 +32,9 @@ func (symbol *Symbol) Show() string {
 }
 
 func main() {
-	//path := "/home/krzysztof/Repos/AdventOfCode2023/inputs/input03.txt"
-	//fmt.Println(FirstPart(path))
-	fmt.Println(SecondPart("/home/krzysztof/Repos/AdventOfCode2023/inputs/input03.txt"))
+	path := "/home/krzysztof/Repos/AdventOfCode2023/inputs/input03.txt"
+	fmt.Println(FirstPart(path))
+	fmt.Println(SecondPart(path))
 }
 
 func SecondPart(filePath string) int {
