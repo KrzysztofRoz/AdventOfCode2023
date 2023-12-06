@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -58,8 +59,44 @@ func FirstPart(filePath string) int {
 }
 
 func SecondPart(filePath string) int {
-	result := 0
+	result := 1
+	var time int
+	var distance int
+	reNum := regexp.MustCompile("\\d+")
+	var isTime bool
+	var tmp int
 
+	file, err := os.Open(filePath)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		isTime, err = regexp.MatchString("Time:", scanner.Text())
+		noSpace := strings.ReplaceAll(scanner.Text(), " ", "")
+		if isTime {
+			for _, val := range reNum.FindAllString(noSpace, -1) {
+				tmp, err = strconv.Atoi(val)
+				time = tmp
+			}
+		} else {
+			for _, val := range reNum.FindAllString(noSpace, -1) {
+				tmp, err = strconv.Atoi(val)
+				distance = tmp
+			}
+		}
+
+	}
+	fmt.Println(time)
+	fmt.Println(distance)
+	result = CalculatePossibilities(time, distance)
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 	return result
 }
 
