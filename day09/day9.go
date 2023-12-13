@@ -12,7 +12,7 @@ import (
 func main() {
 	path := "/home/krzysztof/Repos/AdventOfCode2023/inputs/input09.txt"
 	fmt.Println(FirstPart(path))
-	//fmt.Println(SecondPart(path))
+	fmt.Println(SecondPart(path))
 }
 
 func FirstPart(filePath string) int {
@@ -81,13 +81,42 @@ func InterpolateRightValue(history [][]int) int {
 		secondLast := history[i][len(history[i])-1]
 		history[i-1] = append(history[i-1], lastElement+secondLast)
 	}
-	fmt.Println(history)
+	//fmt.Println(history)
 
 	return history[0][len(history[0])-1]
 }
 
+func InterpolateLeftValue(history [][]int) int {
+	for i := len(history) - 1; i > 0; i-- {
+		first := history[i-1][0]
+		second := history[i][0]
+		slice := make([]int, 0)
+		slice = append(slice, first-second)
+		history[i-1] = append(slice, history[i-1]...)
+	}
+	//fmt.Println(history)
+
+	return history[0][0]
+}
+
 func SecondPart(filePath string) int {
 	result := 0
+	valuesHistory := make([][]int, 0)
+	file, err := os.Open(filePath)
 
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		valuesHistory = append(valuesHistory, parseRowToArray(scanner.Text()))
+		result += InterpolateLeftValue(GetDifferences(valuesHistory[len(valuesHistory)-1]))
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 	return result
 }
